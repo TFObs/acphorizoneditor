@@ -85,7 +85,9 @@ Public Type DebugHelper
     place As String
 End Type
 
-Public scope As acp.Telescope
+
+'Public scope As acp.Telescope'<<<--DON'T DO This: ACP 6.0 changed ActiveX interfaces: No early binding!!!
+Public scope As Object 'New way to reference ACP.Telescope
 Public abort As Boolean
 Public x As Integer
 
