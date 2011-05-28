@@ -1201,7 +1201,10 @@ Dim result
         If result = 7 Then
             Exit Sub
         Else
-            Set scope = New acp.Telescope
+            'Set scope = New acp.Telescope'<<<--DON'T DO This: ACP 6.0 changed ActiveX interfaces: No early binding!!!
+            
+            Set scope = CreateObject("ACP.Telescope")
+            
             cmdConnect_Click
         End If
 End If
@@ -1239,7 +1242,8 @@ DisableCloseButton Me.hwnd  'Disable the Closed button to enable question to dis
    
     isPaused = True
     
-    Set scope = New acp.Telescope
+    'Set scope = New acp.Telescope'<<<--DON'T DO This: ACP 6.0 changed ActiveX interfaces: No early binding!!!
+    Set scope = CreateObject("ACP.Telescope")
     
     If Not scope.Connected Then
         ScopeConnectedAtStartup = False
