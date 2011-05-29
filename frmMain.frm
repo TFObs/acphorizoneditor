@@ -852,6 +852,9 @@ Begin VB.Form frmMain
    Begin VB.Menu mnuHelp 
       Caption         =   "Help"
    End
+   Begin VB.Menu mnuDonate 
+      Caption         =   "Donate!"
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -1365,6 +1368,11 @@ Private Sub mnuAbout_Click()
 FloatWindow frmMain.hwnd, False
     MsgBox "ACP Horizon Editor" & vbCrLf & vbCrLf & "Written by Jörg Hanisch: tilfen@gmail.com" & vbCrLf & "Version 1.13 , 27-05-2011", vbInformation, "About the author"
 FloatWindow frmMain.hwnd, True
+End Sub
+
+Private Sub mnuDonate_Click()
+FloatWindow Me.hwnd, False
+ frmDonate.Show
 End Sub
 
 Private Sub mnuExit_Click()
