@@ -1,4 +1,5 @@
-frmMain = 132, 174, 895, 623, Z, 110, 145, 873, 594, C
-TheSkyHoriz = 66, 87, 829, 536, 
+frmMain = 132, 174, 895, 623, C, 110, 145, 873, 594, C
+TheSkyHoriz = 66, 87, 829, 536, C
 mdlTimer = 0, 0, 0, 0, C
-REGACPHoriz = 154, 203, 917, 652, 
+REGACPHoriz = 154, 203, 917, 652, C
+frmDonate = 88, 116, 851, 565, Z, 88, 116, 851, 565, C

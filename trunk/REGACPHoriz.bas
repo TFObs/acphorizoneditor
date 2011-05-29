@@ -32,7 +32,7 @@ Private Declare Function RegSetValueEx_Str Lib "advapi32.dll" _
         lpValueName As String, ByVal Reserved As Long, ByVal _
         dwType As Long, ByVal lpData As String, ByVal cbData As _
         Long) As Long
-
+        
         
 Private Const HKEY_CLASSES_ROOT As Long = &H80000000
 Private Const HKEY_CURRENT_USER As Long = &H80000001
