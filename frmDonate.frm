@@ -75,7 +75,7 @@ result = ShellExecute(Me.hwnd, "Open", _
              "donate.html", "", App.Path, 1)
 End Sub
 
-Private Sub cmdDonate_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
+Private Sub cmdDonate_MouseMove(Button As Integer, Shift As Integer, x As Single, Y As Single)
     cmdDonate.ToolTipText = "click Me!"
 End Sub
 
@@ -90,7 +90,7 @@ End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
 FloatWindow frmDonate.hwnd, False
-FloatWindow frmMain.hwnd, True
+If frmMain.mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
 

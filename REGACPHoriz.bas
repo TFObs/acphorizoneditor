@@ -172,7 +172,7 @@ End If
         Else
             MsgBox "Error writing the Data, please write to file and try again!", vbCritical, "Error"
         End If
-  FloatWindow frmMain.hwnd, True
+  If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
 
