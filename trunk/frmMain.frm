@@ -4,7 +4,7 @@ Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'Kein
-   Caption         =   "ACP Horizon Editor     (c) J.Hanisch 2011"
+   Caption         =   "ACP Horizon Editor     (c) J.Hanisch 2012"
    ClientHeight    =   7470
    ClientLeft      =   150
    ClientTop       =   840
@@ -14,7 +14,6 @@ Begin VB.Form frmMain
    Icon            =   "frmMain.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
-   MinButton       =   0   'False
    ScaleHeight     =   7470
    ScaleWidth      =   9135
    ShowInTaskbar   =   0   'False
@@ -855,6 +854,19 @@ Begin VB.Form frmMain
    Begin VB.Menu mnuDonate 
       Caption         =   "Donate!"
    End
+   Begin VB.Menu empty 
+      Caption         =   ""
+      Enabled         =   0   'False
+      Visible         =   0   'False
+   End
+   Begin VB.Menu mnuFloat 
+      Caption         =   "Float Window"
+      WindowList      =   -1  'True
+      Begin VB.Menu mnuchkFloat 
+         Caption         =   "Always on Top"
+         Checked         =   -1  'True
+      End
+   End
 End
 Attribute VB_Name = "frmMain"
 Attribute VB_GlobalNameSpace = False
@@ -940,7 +952,14 @@ Set dicInterpol = New Dictionary
         If IsNumeric(GridHoriz.TextMatrix(x, 1)) Then
             dicInterpol.Add GridHoriz.TextMatrix(x, 0), GridHoriz.TextMatrix(x, 1)
             colInterpol.Add GridHoriz.TextMatrix(x, 0)
+            Else
+                If GridHoriz.TextMatrix(x, 1) <> "--" Or dicInterpol.Count = 0 Then
+                    MsgBox "Error ! Non numerical Value" & vbCrLf & vbCrLf & "please check your Value at " & _
+                    GridHoriz.TextMatrix(x, 0) & "°" & vbCrLf & "Cannot Continue...", vbExclamation
+                    Exit Sub
+                End If
         End If
+        
     Next x
     
     firstValue = colInterpol(1): lastValue = colInterpol(colInterpol.Count)
@@ -1058,6 +1077,7 @@ End Sub
 
 Private Sub cmdSave_Click()
 Dim saveFile As String
+Dim saveFileX As String 'TheSkyX - file
 Dim HorVals
 
 If CheckHorizon(False) = False Then Exit Sub
@@ -1111,9 +1131,10 @@ Dim saveStream As TextStream
             .DialogTitle = "Save TheSky Horizon-file"
             .ShowOpen
             saveFile = .FileName
+            saveFileX = Left(.FileName, Len(.FileName) - 4) & "_X.hrz"
         End With
     
-        If Not saveFile = "" Then Call saveTheSkyFile(saveFile)                              'Proceed if file was chosen
+        If Not saveFile = "" Then Call saveTheSkyFile(saveFile, saveFileX)                             'Proceed if file was chosen
             
              
   End If
@@ -1211,7 +1232,7 @@ Dim result
             cmdConnect_Click
         End If
 End If
-   FloatWindow frmMain.hwnd, True
+   If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
 Private Sub cmddisconnect_Click()
@@ -1221,7 +1242,7 @@ If cmdContinue.Visible = True Then
 FloatWindow frmMain.hwnd, False
  result = MsgBox("There is a Recording running which is paused" & vbCrLf & "Do you REALLY want to disconnect?", vbYesNo + vbQuestion, "Recording in Progress")
  If result = 7 Then Exit Sub
-   FloatWindow frmMain.hwnd, True
+   If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End If
  
  abort = True
@@ -1346,7 +1367,7 @@ Shape1.Visible = False
 
 ErrCatcher.place = "lblStatus"
 lblStatus.Caption = "Application Status: Scope-Tracking: " & IIf(isPaused, "Idle/Paused", "in Progress")
-FloatWindow Me.hwnd, True
+If mnuchkFloat.Checked Then FloatWindow Me.hwnd, True
 Exit Sub
 
 errhandler:
@@ -1366,8 +1387,13 @@ End Sub
 
 Private Sub mnuAbout_Click()
 FloatWindow frmMain.hwnd, False
-    MsgBox "ACP Horizon Editor" & vbCrLf & vbCrLf & "Written by Jörg Hanisch: tilfen@gmail.com" & vbCrLf & "Version 1.13 , 27-05-2011", vbInformation, "About the author"
-FloatWindow frmMain.hwnd, True
+    MsgBox "ACP Horizon Editor" & vbCrLf & vbCrLf & "Written by Jörg Hanisch: tilfen@gmail.com" & vbCrLf & "Version 1.16 , 18-01-2012", vbInformation, "About the author"
+If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
+End Sub
+
+Private Sub mnuchkFloat_Click()
+ mnuchkFloat.Checked = IIf(mnuchkFloat.Checked, False, True)
+ FloatWindow frmMain.hwnd, mnuchkFloat.Checked
 End Sub
 
 Private Sub mnuDonate_Click()
@@ -1389,7 +1415,7 @@ If ScopeConnectedAtStartup Then
     result = MsgBox("ACP will be disconnected from the scope" & vbCrLf & vbCrLf & "Click YES if this causes no problems." & vbCrLf & _
     "Click NO to prepare ACP that it is safe to disconnect", vbYesNo + vbQuestion, "Warning about disconnecting..")
     If result = 7 Then Exit Sub
-    FloatWindow frmMain.hwnd, True
+    'FloatWindow frmMain.hwnd, True
  End If
  
 End If
@@ -1409,6 +1435,7 @@ Private Sub mnuGetTS_Click()
  Call GetTheSkyHorizon
 End Sub
 
+
 Private Sub mnuHelp_Click()
 Dim fs As FileSystemObject
 Set fs = New FileSystemObject
@@ -1423,7 +1450,7 @@ Dim HFile As String
     Else
         Call HtmlHelp(0, HFile, HH_DISPLAY_TOPIC, ByVal 0&)
     End If
-    FloatWindow frmMain.hwnd, True
+    If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
  Set fs = Nothing
 End Sub
 
@@ -1687,7 +1714,7 @@ Else
 
 End If
 
-FloatWindow Me.hwnd, True
+If mnuchkFloat.Checked Then FloatWindow Me.hwnd, True
 End Function
 '================================================================
 '=======End of "Text-Entry"-Subs =================================
