@@ -106,16 +106,35 @@ End Sub
 Public Sub getACPHorizon()
 Dim result&, value As Variant
 Dim azimval
-      
+Dim aVals As Integer
+   FloatWindow frmMain.hwnd, False
     'Read String-Value
     result = RegValueGet(HKEY_LOCAL_MACHINE, "Software\denny\acp\Observatory", "Horizon", value)
  
     azimval = Split(value, " ")
     
-    For x = 0 To UBound(azimval) - 1
+    x = 0
+    If UBound(azimval) > 180 Then
+        MsgBox "Oops, there are too many values available (should be 180)" & vbCrLf & _
+        "Only 180 Values will be taken!", vbInformation, "Too many Values available!"
+    ElseIf UBound(azimval) < 180 Then
+        aVals = UBound(azimval) - 1
+        ReDim Preserve azimval(180)
+        MsgBox "Oops, there are some Values missing (should be 180)" & vbCrLf & _
+        "Missing Values will be set to 0.0!", vbInformation, "Values missing!"
+        For x = aVals To 179
+            azimval(x) = "0.0"
+        Next x
+    End If
+    
+    For x = 0 To 179
+        If Not IsNumeric(azimval(x)) Then azimval(x) = "0.0"
+        
         frmMain.GridHoriz.TextMatrix(x + 1, 1) = azimval(x)
+                
     Next x
     
+    If frmMain.mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
     frmMain.DrawHorizon
 End Sub
 
@@ -172,7 +191,7 @@ End If
         Else
             MsgBox "Error writing the Data, please write to file and try again!", vbCritical, "Error"
         End If
-  If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
+  If frmMain.mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
 

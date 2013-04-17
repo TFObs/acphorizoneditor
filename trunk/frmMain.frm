@@ -1,10 +1,10 @@
 VERSION 5.00
-Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFLXGRD.OCX"
+Object = "{5E9E78A0-531B-11CF-91F6-C2863C385E30}#1.0#0"; "MSFlxGrd.ocx"
 Object = "{F9043C88-F6F2-101A-A3C9-08002B2F49FB}#1.2#0"; "COMDLG32.OCX"
 Begin VB.Form frmMain 
    BackColor       =   &H00000000&
    BorderStyle     =   0  'Kein
-   Caption         =   "ACP Horizon Editor     (c) J.Hanisch 2012"
+   Caption         =   "ACP Horizon Editor     (c) J.Hanisch 2013"
    ClientHeight    =   7470
    ClientLeft      =   150
    ClientTop       =   840
@@ -1387,7 +1387,7 @@ End Sub
 
 Private Sub mnuAbout_Click()
 FloatWindow frmMain.hwnd, False
-    MsgBox "ACP Horizon Editor" & vbCrLf & vbCrLf & "Written by Jörg Hanisch: tilfen@gmail.com" & vbCrLf & "Version 1.16 , 18-01-2012", vbInformation, "About the author"
+    MsgBox "ACP Horizon Editor" & vbCrLf & vbCrLf & "Written by Jörg Hanisch: tilfen@gmail.com" & vbCrLf & "Version 1.17 , 17-04-2013", vbInformation, "About the author"
 If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
