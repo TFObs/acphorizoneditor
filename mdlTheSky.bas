@@ -131,9 +131,9 @@ Else
 End If
 
 TSXFile.Close: outfile.Close
-Set outfile = Nothing: st TSXFile = Nothing: Set fs = Nothing
+Set outfile = Nothing: Set TSXFile = Nothing: Set fs = Nothing
 
-If mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
+If frmMain.mnuchkFloat.Checked Then FloatWindow frmMain.hwnd, True
 End Sub
 
 Function check_TheSkyFile(ByVal Path As String)
